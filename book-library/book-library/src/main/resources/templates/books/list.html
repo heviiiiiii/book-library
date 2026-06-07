@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Library</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">BL</span>
+    <div>
+      <h1>Book Library</h1>
+      <p class="sub">Spring Boot MVC + REST — SCSJ4383 Assignment 2</p>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" th:href="@{/books}">Browse</a>
+    <a class="nav-link" th:href="@{/books/new}">Add book</a>
+    <a class="nav-link" th:href="@{/api/books}" target="_blank">REST: /api/books</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="card">
+    <form method="get" th:action="@{/books}" class="search-form">
+      <input type="search"
+             name="q"
+             placeholder="Search by title…"
+             th:value="${query}"
+             autofocus />
+      <button type="submit" class="btn">Search</button>
+      <a class="btn btn-ghost" th:href="@{/books}">Reset</a>
+    </form>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>All books <span class="count" th:text="${#lists.size(books)}">0</span></h2>
+      <a class="btn btn-primary" th:href="@{/books/new}">+ New book</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(books)}" class="empty">
+      <p>No books match. Try clearing the search, or add a new one.</p>
+    </div>
+
+    <table th:unless="${#lists.isEmpty(books)}" class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Year</th>
+          <th>Status</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="b : ${books}">
+          <td th:text="${b.id}">1</td>
+          <td class="title-cell" th:text="${b.title}">Clean Code</td>
+          <td th:text="${b.author}">Robert C. Martin</td>
+          <td><span class="tag" th:text="${b.genre}">Software</span></td>
+          <td th:text="${b.year}">2008</td>
+          <td>
+            <span th:if="${b.available}" class="badge badge-ok">Available</span>
+            <span th:unless="${b.available}" class="badge badge-warn">Borrowed</span>
+          </td>
+          <td class="actions">
+            <a class="btn btn-small" th:href="@{/books/{id}/edit(id=${b.id})}">Edit</a>
+            <form th:action="@{/books/{id}/delete(id=${b.id})}" method="post" class="inline">
+              <button type="submit"
+                      class="btn btn-small btn-danger"
+                      onclick="return confirm('Delete this book?');">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card api-hint">
+    <h3>REST endpoints (the two RESTful web-services)</h3>
+    <ul>
+      <li><code>GET    /api/books</code> &mdash; list all books as JSON</li>
+      <li><code>GET    /api/books/{id}</code> &mdash; one book as JSON</li>
+      <li><code>POST   /api/books</code> &mdash; create a new book (JSON body)</li>
+      <li><code>PUT    /api/books/{id}</code> &mdash; replace a book (JSON body)</li>
+      <li><code>DELETE /api/books/{id}</code> &mdash; remove a book</li>
+    </ul>
+    <p class="muted">
+      Try <code>curl http://localhost:8081/api/books</code> in a terminal,
+      or open <a th:href="@{/api/books}" target="_blank">/api/books</a> in a new tab.
+    </p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>Spring Boot 3 · Spring MVC · Thymeleaf · Spring Data JPA · H2</span>
+</footer>
+
+</body>
+</html>

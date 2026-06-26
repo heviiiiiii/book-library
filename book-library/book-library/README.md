@@ -1,4 +1,4 @@
-# Book Library — SCSJ4383 Assignment 2 (Part A: Frameworks and REST)
+# Book Library — SCSJ4383 Group Project
 
 A small **Spring Boot MVC** application demonstrating five pieces of
 functionality over a single domain (a library of books). Two of those

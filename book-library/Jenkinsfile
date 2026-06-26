@@ -18,10 +18,10 @@ pipeline {
 
     post {
         success {
-            jiraAddComment idOrKey: 'KAN-4', comment: 'Jenkins build completed successfully for KAN-4.'
+            jiraComment issueKey: 'KAN-4', body: 'Jenkins build completed successfully for KAN-4.'
         }
         failure {
-            jiraAddComment idOrKey: 'KAN-4', comment: 'Jenkins build failed for KAN-4.'
+            jiraComment issueKey: 'KAN-4', body: 'Jenkins build failed for KAN-4.'
         }
     }
 }

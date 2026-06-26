@@ -6,12 +6,22 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Build - KAN-4') {
             steps {
+                echo 'Jira issue KAN-4 is being updated through Jenkins Pipeline'
                 dir('book-library/book-library') {
                     bat 'mvn clean package'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            jiraAddComment idOrKey: 'KAN-4', comment: 'Jenkins build completed successfully for KAN-4.'
+        }
+        failure {
+            jiraAddComment idOrKey: 'KAN-4', comment: 'Jenkins build failed for KAN-4.'
         }
     }
 }
